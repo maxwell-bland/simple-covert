@@ -1,17 +1,5 @@
 #include "util.hpp"
 
-void write_bit(unsigned int b) {
-  unsigned long long foo;
-  unsigned int bar;
-
-  while (1) {if (time_period(get_time(&bar)) == 5) break;}
-
-  while (1) {
-    if (b) read_rand(&foo);
-    if (time_period(get_time(&bar)) == 4) break;
-  }
-}
-
 unsigned int next_bit_one(unsigned char * cp) {
   unsigned int res = (*cp) & 1;
   *cp = (*cp) >> 1;
@@ -36,11 +24,16 @@ int main(int argc, char **argv)
 
 		// Put your covert channel code here
     while (*text_p != 0) {
+
       unsigned char c = text_p[0];
       for (unsigned long i = 0; i < sizeof(unsigned char) * 8; i++) {
         write_bit(next_bit_one(&c));
       }
       text_p++;
+    }
+
+    for (int i = 0; i < 8; i++) {
+      write_bit(1);
     }
 
 	}

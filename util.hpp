@@ -17,11 +17,15 @@
 #define ADDR_PTR uint64_t
 #define CYCLES uint32_t
 
-#define SYNC_TIME 10000
+#define THRESH 0.3
+#define MSG_LEN 10
+#define SYNC_TIME 100000
 #define time_period(x) (x % (10 * SYNC_TIME)) / SYNC_TIME
 
 int get_time(unsigned int * p);
 int read_rand(unsigned long long * p);
 CYCLES measure_one_block_access_time(ADDR_PTR addr);
+int read_bit();
+void write_bit(unsigned int b);
 
 #endif

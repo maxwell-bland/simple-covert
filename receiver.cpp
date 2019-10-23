@@ -4,16 +4,10 @@
 int read_bit() {
   unsigned long long foo;
   unsigned int bar;
-  int t1, t2;
 
   fprintf(stderr, "RECEIVER STARTING SYNC\n");
 
-  while (1) {
-    t1 = get_time(&bar);
-    if ((t1 % (10 * SYNC_TIME)) / SYNC_TIME == 5) {
-      break;
-    }
-  }
+  while (1) {if (time_period(get_time(&bar)) == 5) break;}
 
   fprintf(stderr, "RECEIVER STARTING RECV\n");
 
@@ -21,18 +15,12 @@ int read_bit() {
   float avg = 0.0;
   while (1) {
     iters++;
-    t1 = get_time(&bar);
-    read_rand(&foo);
-    t2 = get_time(&bar);
-    avg += t2 - t1;
-    if ((t2 % (10 * SYNC_TIME)) / SYNC_TIME == 4) {
-      break;
-    }
+    avg += read_rand(&foo);
+    if (time_period(get_time(&bar)) == 4) break;
   }
   avg /= iters;
 
-  fprintf(stderr, "%d\n", (int) (avg < 320));
-  // fprintf(stderr, "RECEIVER ENDING RECV %f avg\n", avg);
+  fprintf(stderr, "RECEIVER ENDING RECV %f avg\n", avg);
 
   return 1;
 }
@@ -51,12 +39,10 @@ int main(int argc, char **argv)
   unsigned char c = 0;
 	bool listening = true;
 	while (listening) {
-    for (unsigned long i = 0; i < sizeof(unsigned char); i ++) {
+    for (unsigned long i = 0; i < sizeof(unsigned char) * 8; i ++) {
       c |= read_bit();
       c <<= 1;
     }
-		// Put your covert channel code here
-    // printf("%c", c);
 	}
 
 	printf("Receiver finished.\n");

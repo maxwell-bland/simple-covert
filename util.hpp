@@ -16,7 +16,10 @@
 
 #define ADDR_PTR uint64_t 
 #define CYCLES uint32_t
+#define SYNC_TIME 100000000
 
+int get_time(unsigned int * p);
+int read_rand(unsigned long long * p);
 CYCLES measure_one_block_access_time(ADDR_PTR addr);
 
 #endif

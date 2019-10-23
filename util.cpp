@@ -1,6 +1,15 @@
 
 #include "util.hpp"
 
+
+int get_time(unsigned int * p) {
+  return __builtin_ia32_rdtscp(p);
+}
+
+int read_rand(unsigned long long * p) {
+  return __builtin_ia32_rdseed_di_step(p);
+}
+
 /* Measure the time it takes to access a block with virtual address addr. */
 CYCLES measure_one_block_access_time(ADDR_PTR addr)
 {

@@ -42,7 +42,10 @@ int main(int argc, char **argv)
       c |= (read_bit() << i);
     }
 
-    if (c) fprintf(stderr, "%c\n", c);
+    if (c) {
+      fprintf(stderr, "%c\n", c);
+      c = 0;
+    }
 	}
 
 	printf("Receiver finished.\n");

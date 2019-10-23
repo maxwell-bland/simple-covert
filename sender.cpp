@@ -4,18 +4,12 @@ void write_bit(unsigned int b) {
   unsigned long long foo;
   unsigned int bar;
 
-  fprintf(stderr, "SENDER STARTING SYNC\n");
-
   while (1) {if (time_period(get_time(&bar)) == 5) break;}
-
-  fprintf(stderr, "SENDER STARTING SEND %d\n", b);
 
   while (1) {
     if (b) read_rand(&foo);
     if (time_period(get_time(&bar)) == 4) break;
   }
-
-  fprintf(stderr, "SENDER ENDING SEND\n");
 }
 
 unsigned int next_bit_one(unsigned char * cp) {
@@ -35,6 +29,11 @@ int main(int argc, char **argv)
 		char text_buf[128];
     char * text_p = text_buf;
 		fgets(text_buf, sizeof(text_buf), stdin);
+
+    for (int i = 0; i < 8; i++) {
+      write_bit(1);
+    }
+
 		// Put your covert channel code here
     while (*text_p != 0) {
       unsigned char c = text_p[0];
@@ -43,6 +42,7 @@ int main(int argc, char **argv)
       }
       text_p++;
     }
+
 	}
 
 	printf("Sender finished.\n");

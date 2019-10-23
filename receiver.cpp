@@ -1,15 +1,10 @@
-
 #include"util.hpp"
 
 int read_bit() {
   unsigned long long foo;
   unsigned int bar;
 
-  fprintf(stderr, "RECEIVER STARTING SYNC\n");
-
   while (1) {if (time_period(get_time(&bar)) == 5) break;}
-
-  fprintf(stderr, "RECEIVER STARTING RECV\n");
 
   unsigned long iters = 0;
   float avg = 0.0;
@@ -20,9 +15,7 @@ int read_bit() {
   }
   avg /= iters;
 
-  fprintf(stderr, "RECEIVER ENDING RECV %f avg\n", avg);
-
-  return 1;
+  return avg < 0.3;
 }
 
 int main(int argc, char **argv)
@@ -36,13 +29,20 @@ int main(int argc, char **argv)
 
 	printf("Receiver now listening.\n");
 
+  unsigned char num_ones = 0;
+  while (num_ones != 0xFF) {
+    num_ones = num_ones << 1;
+    num_ones |= read_bit();
+  }
+
   unsigned char c = 0;
 	bool listening = true;
 	while (listening) {
-    for (unsigned long i = 0; i < sizeof(unsigned char) * 8; i ++) {
-      c |= read_bit();
-      c <<= 1;
+    for (unsigned long i = 0; i < sizeof(unsigned char) * 8; i++) {
+      c |= (read_bit() << i);
     }
+
+    if (c) fprintf(stderr, "%c\n", c);
 	}
 
 	printf("Receiver finished.\n");

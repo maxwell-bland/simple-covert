@@ -1,6 +1,6 @@
 #include"util.hpp"
 
-int read_bit() {
+/*int read_bit() {
   unsigned long long foo;
   unsigned int bar;
 
@@ -17,7 +17,7 @@ int read_bit() {
   avg /= iters;
 
   return avg < THRESH;
-}
+  }*/
 
 int main(int argc, char **argv)
 {
@@ -49,7 +49,7 @@ int main(int argc, char **argv)
       }
 
       if (c) {
-        fprintf(stderr, "%c\n", c);
+        fprintf(stderr, "%c", c);
         c = 0;
       }
     }

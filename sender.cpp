@@ -18,6 +18,9 @@ int main(int argc, char **argv)
     char * text_p = text_buf;
 		fgets(text_buf, sizeof(text_buf), stdin);
 
+    int len = 0;
+    clock_t begin = clock();
+    
     for (int i = 0; i < 8; i++) {
       write_bit(1);
     }
@@ -30,11 +33,19 @@ int main(int argc, char **argv)
         write_bit(next_bit_one(&c));
       }
       text_p++;
+      len++;
     }
 
     for (int i = 0; i < 8; i++) {
       write_bit(1);
     }
+
+    clock_t end = clock();
+   
+    double time_spent = (long double)(end-begin) / CLOCKS_PER_SEC;
+    printf("totalTime: %f\n", time_spent);
+    double bytes_per_sec = len / time_spent;
+    printf("B/sec: %f\n", bytes_per_sec);
 
 	}
 

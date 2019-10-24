@@ -5,14 +5,14 @@ int read_bit() {
   unsigned long long foo;
   unsigned int bar;
 
-  while (1) {if (time_period(get_time(&bar)) == 5) break;}
+  while (1) {if (time_period(get_time(&bar)) == 1) break;}
 
   unsigned long iters = 0;
   float avg = 0.0;
   while (1) {
     iters++;
     avg += read_rand(&foo);
-    if (time_period(get_time(&bar)) == 4) break;
+    if (time_period(get_time(&bar)) == 0) break;
   }
 
   avg /= iters;
@@ -24,11 +24,11 @@ void write_bit(unsigned int b) {
   unsigned long long foo;
   unsigned int bar;
 
-  while (1) {if (time_period(get_time(&bar)) == 5) break;}
+  while (1) {if (time_period(get_time(&bar)) == 1) break;}
 
   while (1) {
     if (b) read_rand(&foo);
-    if (time_period(get_time(&bar)) == 4) break;
+    if (time_period(get_time(&bar)) == 0) break;
   }
 }
 

@@ -23,9 +23,7 @@ int main(int argc, char **argv)
 
     char ack_buf[sizeof(unsigned int) + 1] = {0};
     *((unsigned int *)ack_buf) = msg_num;
-    send_message(ack_buf);
-    clock_t t = clock();
-    while (clock() - t < 100);
+    send_message(ack_buf, sizeof(unsigned int));
   }
 
 	printf("Receiver finished.\n");

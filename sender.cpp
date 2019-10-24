@@ -12,7 +12,7 @@ int main(int argc, char **argv)
 	while (sending) {
     unsigned char recv_buf[129] = {0};
 		char text_buf[128] = {0};
-		fgets(text_buf, sizeof(text_buf), stdin);
+		fgets(text_buf, sizeof(text_buf) - 1, stdin);
 
     int i = 0;
     while (text_buf[i]) {
@@ -24,15 +24,12 @@ int main(int argc, char **argv)
 
     // Do send
     while (1) {
-      send_message(text_buf);
+      send_message(text_buf, text_size);
       if (recv_msg(recv_buf, sizeof(recv_buf)) != -1) {
         if (msg_num == ((unsigned int *)recv_buf)[0]) {
           printf("ACK SUCCESS!\n");
           msg_num++;
           break;
-        } else {
-          clock_t t = clock();
-          while (clock() - t < 100);
         }
       }
     }

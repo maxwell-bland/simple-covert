@@ -74,7 +74,7 @@ void send_char(unsigned char c) {
   }
 }
 
-void send_message(char * buf) {
+void send_message(char * buf, int msg_size) {
   for (int i = 0; i < 8; i++) {
     write_bit(1);
   }
@@ -82,15 +82,16 @@ void send_message(char * buf) {
   unsigned char c;
   unsigned char chk = 0;
 
-  while ((*buf) != 0) {
+  while (msg_size != 0) {
     c = *buf;
 
     send_char(c);
-    printf("SEND %d\n", c);
+    // printf("SEND %d\n", c);
 
     chk += c;
 
     buf++;
+    msg_size--;
   }
 
   for (int i = 0; i < sizeof(unsigned int); i++) {
@@ -141,7 +142,7 @@ unsigned int recv_msg(unsigned char * buf, unsigned int buf_sz) {
       break;
     }
 
-    printf("RECV %d\n", *buf);
+    // printf("RECV %d\n", *buf);
     buf++;
     len++;
   }

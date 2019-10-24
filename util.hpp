@@ -19,7 +19,7 @@
 
 #define THRESH 0.3
 #define MSG_LEN 10
-#define SYNC_TIME 100000
+#define SYNC_TIME 1000000
 #define time_period(x) (x % (10 * SYNC_TIME)) / SYNC_TIME
 
 int get_time(unsigned int * p);
@@ -28,6 +28,6 @@ CYCLES measure_one_block_access_time(ADDR_PTR addr);
 int read_bit();
 void write_bit(unsigned int b);
 unsigned int recv_msg(unsigned char * buf, unsigned int buf_sz);
-void send_message(char * buf);
+void send_message(char * buf, int msg_size);
 
 #endif

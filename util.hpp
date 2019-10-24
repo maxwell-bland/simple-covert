@@ -19,7 +19,7 @@
 
 #define THRESH 0.3
 #define MSG_LEN 10
-#define SYNC_TIME 10000
+#define SYNC_TIME 5000
 #define time_period(x) (x % (10 * SYNC_TIME)) / SYNC_TIME
 #define get_bit(x, i) (x & (1 << i)) >> i
 

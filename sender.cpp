@@ -18,6 +18,10 @@ int main(int argc, char **argv)
 		// Put your covert channel code here
     while (*text_p != 0) {
       for (int i = 0; i < 8; i++) {
+        write_bit(0);
+      }
+
+      for (int i = 0; i < 8; i++) {
         write_bit(1);
       }
 
@@ -34,6 +38,7 @@ int main(int argc, char **argv)
         }
         c >>= 4;
       }
+
 
       text_p++;
       len++;

@@ -27,5 +27,7 @@ int read_rand(unsigned long long * p);
 CYCLES measure_one_block_access_time(ADDR_PTR addr);
 int read_bit();
 void write_bit(unsigned int b);
+unsigned int recv_msg(unsigned char * buf, unsigned int buf_sz);
+void send_message(char * buf);
 
 #endif

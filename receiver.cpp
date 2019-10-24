@@ -31,21 +31,50 @@ int main(int argc, char **argv)
 	printf("Receiver now listening.\n");
 
   while (1) {
-    unsigned char num_ones = 0;
-    while (num_ones != 0xFF) {
-      num_ones = num_ones << 1;
-      num_ones |= read_bit();
-    }
 
     unsigned char c = 0;
     bool listening = true;
     while (listening) {
-      for (unsigned long i = 0; i < sizeof(unsigned char) * 8; i++) {
-        c |= (read_bit() << i);
+      unsigned char num_ones = 0;
+      while (num_ones != 0xFF) {
+        num_ones = num_ones << 1;
+        num_ones |= read_bit();
       }
 
-      if (c == 0xFF) {
-        break;
+      for (int k = 0; k < 2; k++) {
+        int boxes[4];
+        int votes[4][4];
+        for (int i = 0; i < 4; i++) {
+          for (int j = 0; j < 4; j++) {
+            votes[i][j] = read_bit();
+          }
+        }
+
+        for (int i = 0; i < 4; i++) {
+          boxes[i] = votes[i][i];
+          for (int j = 0; j < 4; j++) {
+            if (i != j) {
+              boxes[i] += votes[i][j] ^ votes[j][j];
+            }
+          }
+        }
+
+        for (int i = 0; i < 4; i++) {
+          if ((votes[i][i] == 0 && boxes[i] > 2) ||
+              (votes[i][i] == 1 && boxes[i] < 2)) {
+            votes[i][i] ^= 1;
+            for (int j = 0; j < 4; j++) {
+              if (j != i) {
+                votes[j][i] ^= 1;
+              }
+            }
+            i = -1;
+          }
+        }
+
+        for (int i = 0; i < 4; i++) {
+          c |= ((votes[i][i] << (4 * k)) << i);
+        }
       }
 
       if (c) {

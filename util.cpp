@@ -68,13 +68,25 @@ unsigned int next_bit_one(unsigned char * cp) {
   return res;
 }
 
+void recv_char(unsigned char * c) {
+
+  for (unsigned long i = 0; i < sizeof(unsigned char) * 8; i++) {
+    *c |= (read_bit() << i);
+  }
+}
+
 void send_char(unsigned char c) {
+
   for (unsigned long i = 0; i < sizeof(unsigned char) * 8; i++) {
     write_bit(next_bit_one(&c));
   }
 }
 
 void send_message(char * buf, int msg_size) {
+  for (int i = 0; i < 256; i++) {
+    write_bit(0);
+  }
+
   for (int i = 0; i < 8; i++) {
     write_bit(1);
   }
@@ -94,11 +106,14 @@ void send_message(char * buf, int msg_size) {
     msg_size--;
   }
 
+  c = 0;
+  send_char(c);
+  send_char(c);
+
   for (int i = 0; i < sizeof(unsigned int); i++) {
     c = *(((unsigned char *) (&msg_num)) + i);
 
     send_char(c);
-    printf("SEND %d\n", c);
 
     chk += c;
   }
@@ -106,18 +121,10 @@ void send_message(char * buf, int msg_size) {
   chk ^= 0xFF;
   chk++;
   c = chk;
-  printf("SENDING %d\n", chk);
   send_char(c);
-
 
   for (int i = 0; i < 8; i++) {
     write_bit(1);
-  }
-}
-
-void recv_char(unsigned char * c) {
-  for (unsigned long i = 0; i < sizeof(unsigned char) * 8; i++) {
-    *c |= (read_bit() << i);
   }
 }
 
@@ -137,12 +144,14 @@ unsigned int recv_msg(unsigned char * buf, unsigned int buf_sz) {
   while (1) {
     recv_char(buf);
 
+    // if ((*buf) == 0) {
+    //   end = 1;
+    // }
+
     if ((*buf) == 0xFF) {
-      printf("END SENT\n");
       break;
     }
 
-    // printf("RECV %d\n", *buf);
     buf++;
     len++;
   }
@@ -156,8 +165,6 @@ unsigned int recv_msg(unsigned char * buf, unsigned int buf_sz) {
   chk ^= 0xFF;
   chk++;
 
-  printf("CHECKSUM %d\n", chk);
-
   if (len == 0 || chk != buf[len - 1]) {
     return -1;
   }
@@ -168,10 +175,6 @@ unsigned int recv_msg(unsigned char * buf, unsigned int buf_sz) {
     *msg_num_p = buf[i];
     buf[i] = 0;
     msg_num_p++;
-  }
-
-  for (int i = 0; i < len - 1 - sizeof(unsigned int); i++) {
-    printf("%c", buf[i]);
   }
 
   return msg_num;

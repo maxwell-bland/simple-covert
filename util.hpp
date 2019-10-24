@@ -19,7 +19,7 @@
 
 #define THRESH 0.3
 #define MSG_LEN 10
-#define SYNC_TIME 1000000
+#define SYNC_TIME 1000
 #define time_period(x) (x % (10 * SYNC_TIME)) / SYNC_TIME
 
 int get_time(unsigned int * p);

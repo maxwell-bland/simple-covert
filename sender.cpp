@@ -19,7 +19,7 @@ int main(int argc, char **argv)
       i++;
     }
 
-    size_t text_size = i - 1;
+    size_t text_size = i;
     clock_t begin = clock();
 
     // Do send

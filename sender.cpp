@@ -17,7 +17,7 @@ int main(int argc, char **argv)
 
 		// Put your covert channel code here
     while (*text_p != 0) {
-      for (int i = 0; i < 8; i++) {
+      for (int i = 0; i < 32; i++) {
         write_bit(0);
       }
 
@@ -26,19 +26,15 @@ int main(int argc, char **argv)
       }
 
       unsigned char c = text_p[0];
-      for (int k = 0; k < 2; k++) {
-        for (int i = 0; i < 4; i++) {
-          for (int j = 0; j < 4; j++) {
-            if (j == i) {
-              write_bit(get_bit(c,i));
-            } else {
-              write_bit(get_bit(c,i) ^ get_bit(c,j));
-            }
+      for (int i = 0; i < 8; i++) {
+        for (int j = 0; j < 8; j++) {
+          if (j == i) {
+            write_bit(get_bit(c,i));
+          } else {
+            write_bit(get_bit(c,i) ^ get_bit(c,j));
           }
         }
-        c >>= 4;
       }
-
 
       text_p++;
       len++;

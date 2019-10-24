@@ -35,46 +35,47 @@ int main(int argc, char **argv)
     unsigned char c = 0;
     bool listening = true;
     while (listening) {
-      unsigned char num_ones = 0;
+      unsigned int num_ones = 0;
       while (num_ones != 0xFF) {
         num_ones = num_ones << 1;
         num_ones |= read_bit();
       }
 
-      for (int k = 0; k < 2; k++) {
-        int boxes[4];
-        int votes[4][4];
-        for (int i = 0; i < 4; i++) {
-          for (int j = 0; j < 4; j++) {
-            votes[i][j] = read_bit();
+      int boxes[8];
+      int votes[8][8];
+      for (int i = 0; i < 8; i++) {
+        for (int j = 0; j < 8; j++) {
+          votes[i][j] = read_bit();
+        }
+      }
+
+      for (int i = 0; i < 8; i++) {
+        boxes[i] = votes[i][i];
+        for (int j = 0; j < 8; j++) {
+          if (i != j) {
+            boxes[i] += votes[i][j] ^ votes[j][j];
           }
         }
+      }
 
-        for (int i = 0; i < 4; i++) {
-          boxes[i] = votes[i][i];
-          for (int j = 0; j < 4; j++) {
-            if (i != j) {
-              boxes[i] += votes[i][j] ^ votes[j][j];
-            }
-          }
-        }
-
-        for (int i = 0; i < 4; i++) {
-          if ((votes[i][i] == 0 && boxes[i] > 2) ||
-              (votes[i][i] == 1 && boxes[i] < 2)) {
+      for (int i = 0; i < 8; i++) {
+        for (int k = 1; k < 8; k++) {
+          if ((votes[i][i] == 0 && boxes[i] > 4 && boxes[i] == 8 - k) ||
+              (votes[i][i] == 1 && boxes[i] < 4 && boxes[i] == k)) {
             votes[i][i] ^= 1;
-            for (int j = 0; j < 4; j++) {
+            for (int j = 0; j < 8; j++) {
               if (j != i) {
                 votes[j][i] ^= 1;
               }
             }
             i = -1;
+            break;
           }
         }
+      }
 
-        for (int i = 0; i < 4; i++) {
-          c |= ((votes[i][i] << (4 * k)) << i);
-        }
+      for (int i = 0; i < 8; i++) {
+        c |= (votes[i][i] << i);
       }
 
       if (c) {

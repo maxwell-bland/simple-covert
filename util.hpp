@@ -17,9 +17,9 @@
 #define ADDR_PTR uint64_t
 #define CYCLES uint32_t
 
-#define THRESH 0.3
+#define THRESH 0.28
 #define MSG_LEN 10
-#define SYNC_TIME 5000
+#define SYNC_TIME 1000
 #define time_period(x) (x % (10 * SYNC_TIME)) / SYNC_TIME
 #define get_bit(x, i) (x & (1 << i)) >> i
 

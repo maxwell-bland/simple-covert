@@ -1,5 +1,6 @@
 #include"util.hpp"
 
+unsigned int my_msg_num = 0;
 unsigned int msg_num = 0;
 
 int main(int argc, char **argv)
@@ -18,10 +19,14 @@ int main(int argc, char **argv)
     unsigned int res = recv_msg(recv_buf, sizeof(recv_buf));
     if (res != -1) {
       msg_num = res;
-      int i = 0;
-      while(recv_buf[i]) {
-        printf("%c", recv_buf[i]);
-        i++;
+      if (msg_num == my_msg_num) {
+
+	int i = 0;
+	while(recv_buf[i]) {
+	  printf("%c", recv_buf[i]);
+	  i++;
+	}
+	my_msg_num++;
       }
     }
 

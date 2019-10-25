@@ -109,6 +109,8 @@ void send_message(char * buf, int msg_size) {
   c = 0;
   send_char(c);
   send_char(c);
+  send_char(c);
+  send_char(c);
 
   for (int i = 0; i < sizeof(unsigned int); i++) {
     c = *(((unsigned char *) (&msg_num)) + i);

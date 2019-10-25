@@ -27,7 +27,6 @@ int main(int argc, char **argv)
       send_message(text_buf, text_size);
       if (recv_msg(recv_buf, sizeof(recv_buf)) != -1) {
         if (msg_num == ((unsigned int *)recv_buf)[0]) {
-          printf("ACK SUCCESS!\n");
           msg_num++;
           break;
         }
@@ -35,7 +34,7 @@ int main(int argc, char **argv)
     }
 
     clock_t end = clock();
-    double time_spent = (end - begin) / CLOCKS_PER_SEC;
+    double time_spent = ((double)(end - begin)) / CLOCKS_PER_SEC;
     double bytes_per_sec = text_size / time_spent;
     printf("B/sec %f\n", bytes_per_sec);
 	}
